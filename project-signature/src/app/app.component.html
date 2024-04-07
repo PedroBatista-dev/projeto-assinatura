@@ -1,0 +1,22 @@
+<div class="tablet-horizontal">
+  <button class="botao-fullscreen" (click)="toggleFullScreen()"><i class="fas fa-expand"></i></button>
+  <div class="div">
+      <div class="overlap">
+          <p class="text-wrapper">Assinatura Digital</p>
+          <div class="rectangle"></div>
+      </div>
+      <div class="overlap-group">
+        <signature-pad class="text-wrapper-2" #signature 
+          [options]="signaturePadOptions" 
+          (drawStart)="drawStart($event)" 
+          (drawEnd)="drawComplete($event)">
+        </signature-pad>
+      </div>
+      <div class="frame" (click)="limpar()">
+          <div class="text-wrapper-3">Limpar</div>
+      </div>
+      <div class="frame-2" (click)="enviar()">
+          <div class="text-wrapper-3">Enviar</div>
+      </div>
+  </div>
+</div>
