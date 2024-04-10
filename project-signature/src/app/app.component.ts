@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgSignaturePadOptions, SignaturePadComponent } from '@almothafar/angular-signature-pad';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,9 @@ export class AppComponent {
 
   isFullScreen = false;
 
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions!: Observable<string[]>;
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -28,6 +32,17 @@ export class AppComponent {
       CodigoUsuario: [null],
       Assinatura: [null]
     });
+
+    this.filteredOptions = this.formulario.controls['CodigoUsuario'].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)),
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   ngAfterViewInit() {
