@@ -7,16 +7,17 @@
       </div>
       <div class="overlap-group">
         <form class="example-form" [formGroup]="formulario">
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Nome</mat-label>
+          <mat-form-field class="example-full-width" appearance="fill" class="autocomplete">
+            <mat-label class="label">Nome</mat-label>
             <input type="text"
                    placeholder="Nome"
                    aria-label="Nome"
                    matInput
+                   class="nome"
                    formControlName="NomeCracha"                   
                    [matAutocomplete]="auto" />
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            <mat-autocomplete #auto="matAutocomplete" class="autocomplete-list">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [disabled]="option.CaminhoAssinatura">
                 {{option.NomeCracha}}
               </mat-option>
             </mat-autocomplete>
@@ -34,5 +35,6 @@
       <div class="frame-2" (click)="enviar()">
           <div class="text-wrapper-3">Enviar</div>
       </div>
+      <img src="../assets/agro.png" alt="Imagem Agro" class="imagem">
   </div>
 </div>

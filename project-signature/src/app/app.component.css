@@ -1,5 +1,5 @@
 .tablet-horizontal {
-    background-color: #011e38;
+    background-color: darkgreen;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -7,7 +7,7 @@
   }
   
   .tablet-horizontal .botao-fullscreen {
-    background-color: #011e38;
+    background-color: darkgreen;
     width: 60px;
     height: 60px;
     margin: 8px 0 0 8px;
@@ -18,7 +18,7 @@
   }
   
   .tablet-horizontal .div {
-    background-color: #011e38;
+    background-color: darkgreen;
     overflow: hidden;
     width: 1440px;
     height: 713px;
@@ -48,7 +48,16 @@
     height: 7px;
     top: 130px;
     left: 0;
-    background-color: #2750e9;
+    background-color: saddlebrown;
+  }
+
+  .tablet-horizontal .imagem {
+    position: absolute;
+    width: 200px;
+    height: 206px;
+    top: 459px;
+    left: 10px;
+    object-fit: cover;
   }
   
   .tablet-horizontal .overlap-group {
@@ -70,7 +79,7 @@
     position: absolute;
     top: 590px;
     left: 540px;
-    background-color: #264fec;
+    background-color: saddlebrown;
     border-radius: 10px;
     cursor: pointer;
   }
@@ -84,7 +93,7 @@
     position: absolute;
     top: 590px;
     left: 740px;
-    background-color: #264fec;
+    background-color: saddlebrown;
     border-radius: 10px;
     cursor: pointer;
   }
@@ -99,4 +108,18 @@
     font-size: 25px;
     letter-spacing: 0;
     line-height: normal;
+  }
+
+  .tablet-horizontal .autocomplete {
+    width: 100%;
+    background-color: #f5f1eb;
+  }
+  
+  .tablet-horizontal .label {
+    font-size: 20px;
+  }
+
+  .tablet-horizontal .mat-input-element {
+    font-size: 32px; /* tamanho da fonte */
+    color: #333; /* cor do texto */
   }

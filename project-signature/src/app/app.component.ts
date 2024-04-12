@@ -43,7 +43,6 @@ export class AppComponent {
 
     this.dataService.getUsuarios().subscribe({
         next:  (response) => {
-          console.log(response);
           this.options = response.data;
         },
         error: err => Swal.fire({
@@ -55,7 +54,6 @@ export class AppComponent {
   }
 
   private _filter(value: any): any[] {
-    console.log(value)
     if (typeof value === 'string') {
       const filterValue = value.toLowerCase();
   
@@ -92,32 +90,40 @@ export class AppComponent {
     this.signaturePad.clear();
   }
 
-  enviar() {
-    console.log(this.formulario.value);
-    this.formulario.get('NomeCracha')?.setValue('');
-    this.formulario.get('CodigoUsuario')?.setValue(null);
-    this.formulario.get('Assinatura')?.setValue(null);
-    this.limpar();
+  enviar() {    
     if (this.formulario.get('CodigoUsuario')?.value && this.formulario.get('Assinatura')?.value) {
-      // this.dataService.enviarResposta(this.formulario.get('resposta')?.value.trim()).subscribe({
-      //   next:  (response) => {
-      //     this.formulario.get('resposta')!.reset();
-      //     Swal.fire({
-      //       icon: 'success',
-      //       title: 'Sucesso!',
-      //       text: 'Sua resposta foi enviada com sucesso!',
-      //       timer: 2000,
-      //       showConfirmButton: false,
-      //       width: 600,
-      //       padding: '3em',
-      //     });
-      //   },
-      //   error: err => Swal.fire({
-      //     icon: 'error',
-      //     title: 'Erro!',
-      //     text: `Erro ao enviar a resposta: ${err}`
-      //   })
-      // });
+      this.dataService.enviarResposta(this.formulario.get('CodigoUsuario')?.value, this.formulario.get('Assinatura')?.value).subscribe({
+        next:  (response) => {
+          this.formulario.get('NomeCracha')?.setValue('');
+          this.formulario.get('CodigoUsuario')?.setValue(null);
+          this.formulario.get('Assinatura')?.setValue(null);
+          this.limpar();
+          this.dataService.getUsuarios().subscribe({
+            next:  (response) => {
+              this.options = response.data;
+            },
+            error: err => Swal.fire({
+              icon: 'error',
+              title: 'Erro!',
+              text: `Erro ao buscar os usuarios: ${err}`
+            })
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Assinatura foi enviada com sucesso!',
+            timer: 2000,
+            showConfirmButton: false,
+            width: 600,
+            padding: '3em',
+          });
+        },
+        error: err => Swal.fire({
+          icon: 'error',
+          title: 'Erro!',
+          text: `Erro ao enviar a assinatura: ${err}`
+        })
+      });
     }
   }
 

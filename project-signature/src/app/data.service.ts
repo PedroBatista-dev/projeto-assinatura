@@ -13,8 +13,9 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  enviarResposta(resposta: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}resposta`, { Texto: resposta });
+  enviarResposta(codigo: string, assinatura: string): Observable<any> {
+    const resource = { CodigoUsuario: codigo, Assinatura: assinatura.split(",")[1] };
+    return this.http.post<any>(`${this.apiUrl}usuarios/gravar-assinatura`, resource);
   }
 
   getUsuarios(): Observable<any> {
