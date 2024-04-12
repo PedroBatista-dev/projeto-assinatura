@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { NgSignaturePadOptions, SignaturePadComponent } from '@almothafar/angular-signature-pad';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
+import { DataService } from './data.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -22,27 +24,50 @@ export class AppComponent {
 
   isFullScreen = false;
 
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions!: Observable<string[]>;
+  options: { CodigoUsuario: number, Nome: string, NomeCracha: string, CaminhoAssinatura: string }[] = [];
+  filteredOptions!: Observable<any[]>;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   ngOnInit(): void {
     this.formulario = this.formBuilder.group({
       CodigoUsuario: [null],
+      NomeCracha: [null],
       Assinatura: [null]
     });
 
-    this.filteredOptions = this.formulario.controls['CodigoUsuario'].valueChanges.pipe(
+    this.filteredOptions = this.formulario.controls['NomeCracha'].valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value)),
     );
+
+    this.dataService.getUsuarios().subscribe({
+        next:  (response) => {
+          console.log(response);
+          this.options = response.data;
+        },
+        error: err => Swal.fire({
+          icon: 'error',
+          title: 'Erro!',
+          text: `Erro ao buscar os usuarios: ${err}`
+        })
+    });
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  private _filter(value: any): any[] {
+    console.log(value)
+    if (typeof value === 'string') {
+      const filterValue = value.toLowerCase();
+  
+      return this.options.filter(option => option.NomeCracha.toLowerCase().includes(filterValue));
+    }
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    const filterValue = value.NomeCracha.toLowerCase();
+
+    this.formulario.get('NomeCracha')?.setValue(value.NomeCracha);
+    this.formulario.get('CodigoUsuario')?.setValue(value.CodigoUsuario);
+  
+    return this.options.filter(option => option.NomeCracha.toLowerCase().includes(filterValue));
   }
 
   ngAfterViewInit() {
@@ -69,7 +94,11 @@ export class AppComponent {
 
   enviar() {
     console.log(this.formulario.value);
-    if (this.formulario.get('resposta')?.value) {
+    this.formulario.get('NomeCracha')?.setValue('');
+    this.formulario.get('CodigoUsuario')?.setValue(null);
+    this.formulario.get('Assinatura')?.setValue(null);
+    this.limpar();
+    if (this.formulario.get('CodigoUsuario')?.value && this.formulario.get('Assinatura')?.value) {
       // this.dataService.enviarResposta(this.formulario.get('resposta')?.value.trim()).subscribe({
       //   next:  (response) => {
       //     this.formulario.get('resposta')!.reset();

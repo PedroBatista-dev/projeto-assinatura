@@ -8,16 +8,16 @@
       <div class="overlap-group">
         <form class="example-form" [formGroup]="formulario">
           <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Number</mat-label>
+            <mat-label>Nome</mat-label>
             <input type="text"
-                   placeholder="Pick one"
-                   aria-label="Number"
+                   placeholder="Nome"
+                   aria-label="Nome"
                    matInput
-                   formControlName="CodigoUsuario"
+                   formControlName="NomeCracha"                   
                    [matAutocomplete]="auto" />
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
+                {{option.NomeCracha}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
